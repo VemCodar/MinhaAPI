@@ -15,4 +15,14 @@ public class UserRepository
         };
     }
 
+    public User? GetByEmail(string email)
+    {
+        return new User
+        {
+            Id = Guid.NewGuid(),
+            Email = email,
+            Password = string.Empty,
+            Role = "admin"
+        };
+    }
 }

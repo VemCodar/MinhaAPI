@@ -18,8 +18,8 @@ public static class AuthSettings
             opt.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = "MinhaAPI",
-                ValidAudience = "MinhaAPI", 
+                ValidIssuer = authConfig.Issuer,
+                ValidAudience = authConfig.Audience, 
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 IssuerSigningKey = new SymmetricSecurityKey(authConfig.CreateSecretKeyBytes())

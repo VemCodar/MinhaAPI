@@ -7,7 +7,7 @@ namespace MinhaAPI.Services;
 
 public class TokenService(AuthConfig authConfig)
 {
-    public string CreateToken(User user)
+    public string CreateToken(User user, int expiresInMinutes = 30)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         
@@ -23,12 +23,21 @@ public class TokenService(AuthConfig authConfig)
         };
         
         var token = new JwtSecurityToken(
-            issuer: "MinhaAPI",
-            audience: "MinhaAPI",
+            issuer: authConfig.Issuer,
+            audience: authConfig.Audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
+            expires: DateTime.Now.AddMinutes(expiresInMinutes),
             signingCredentials: credentials
         );
         return tokenHandler.WriteToken(token);
+    }
+    
+    public string ExtractEmailFromToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+        if(securityToken is null) return string.Empty;
+        var claim = securityToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+        return claim?.Value ?? string.Empty;
     }
 }

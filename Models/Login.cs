@@ -10,3 +10,9 @@ public class Login
     [Required]
     public string Password { get; set; }
 }
+
+public class RefreshedToken
+{
+    [Required]
+    public string Token { get; set; }
+}
