@@ -12,9 +12,16 @@ public static class Products
             {
                 return Results.Ok(user.Identity);
             })
-            .RequireAuthorization("sudo")
+            .RequireAuthorization("admin")
             .WithName("products")
             .WithOpenApi();
+        
+        app.MapGet("/products/exceptions", (ClaimsPrincipal user) =>
+            {
+                throw new Exception();
+            })
+            .WithName("productsexceptions")
+            .WithOpenApi();        
 
         return app;
     }

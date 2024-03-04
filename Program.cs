@@ -12,15 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddLogSettings();
 
 builder.Services.AddAuthenticationJWT(builder.Configuration);
-
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ExceptionGlobalHandler>();
 builder.Services.AddScoped<AuthConfig>(_ => new AuthConfig(builder.Configuration));
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddSwagger();
 var app = builder.Build();
+app.UseExceptionHandler();
 
-//app.AddExceptionHandler<ExceptionGlobalHandler>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.AddPeopleEndpoints()
