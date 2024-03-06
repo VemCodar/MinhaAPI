@@ -14,7 +14,8 @@ public static class Auth
         app.MapPost("/auth", (
                 [FromBody] Login login,
                 [FromServices]UserRepository userRepository,
-                [FromServices]TokenService tokenService) =>
+                [FromServices]TokenService tokenService,
+                CancellationToken cancellationToken) =>
             {
                 var user = userRepository.GetByEmailAndPassword(login.Email, login.Password);
                 if (user is null) return Results.Unauthorized();
